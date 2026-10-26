@@ -93,7 +93,7 @@ export const LoginPage = () => {
         >
           <LogIn size={20} />
         </Box>
-        <Typography variant="h6" sx={{ fontWeight: 700, color: '#ffffff' }}>
+        <Typography variant="h6" sx={{ fontWeight: 700, color: 'text.primary' }}>
           Sign In
         </Typography>
         <Typography variant="caption" sx={{ color: 'text.secondary' }}>

@@ -66,7 +66,7 @@ export const StarterScreen = () => {
             sx={{
               fontSize: { xs: '2.5rem', sm: '3.5rem', md: '4rem' },
               fontWeight: 800,
-              color: '#ffffff',
+              color: 'text.primary',
             }}
           >
             APIChange{' '}
@@ -605,7 +605,7 @@ export const StarterScreen = () => {
         {/* Route Architecture Grid */}
         <Box sx={{ mt: 8 }}>
           <Box sx={{ mb: 3 }}>
-            <Typography variant="h5" sx={{ fontWeight: 700, color: '#ffffff' }}>
+            <Typography variant="h5" sx={{ fontWeight: 700, color: 'text.primary' }}>
               Application Route Architecture
             </Typography>
             <Typography variant="body2" sx={{ color: 'text.secondary' }}>
@@ -702,7 +702,7 @@ export const StarterScreen = () => {
 
                       <Typography
                         variant="subtitle1"
-                        sx={{ mt: 1.5, fontWeight: 600, color: '#ffffff' }}
+                        sx={{ mt: 1.5, fontWeight: 600, color: 'text.primary' }}
                       >
                         {route.title}
                       </Typography>
@@ -765,7 +765,7 @@ export const StarterScreen = () => {
           <Typography variant="caption" sx={{ color: 'text.secondary' }}>
             APIChange Radar Admin Portal &bull; Environment Setup &bull; MUI v6 &bull;
             JavaScript &bull; Separate repository:{' '}
-            <code style={{ color: '#ffffff', fontFamily: 'monospace' }}>
+            <code style={{ color: 'inherit', fontFamily: 'monospace' }}>
               api-change-radar-admin
             </code>
           </Typography>

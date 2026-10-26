@@ -35,7 +35,7 @@ export const NotFoundPage = () => {
             <FileQuestion size={32} />
           </Box>
 
-          <Typography variant="h4" sx={{ fontWeight: 800, color: '#ffffff' }}>
+          <Typography variant="h4" sx={{ fontWeight: 800, color: 'text.primary' }}>
             404 — Page Not Found
           </Typography>
 

@@ -11,6 +11,7 @@ import { EndpointsPage } from '@/features/endpoints/EndpointsPage';
 import { ChecksPage } from '@/features/checks/ChecksPage';
 import { IncidentsPage } from '@/features/incidents/IncidentsPage';
 import { StatusPageSettings } from '@/features/status-page/StatusPageSettings';
+import { PublicStatusPage } from '@/features/status-page/PublicStatusPage';
 import { NotFoundPage } from '@/components/common/NotFoundPage';
 
 /**
@@ -18,15 +19,20 @@ import { NotFoundPage } from '@/components/common/NotFoundPage';
  *
  * Route Strategy:
  * 1. Root ("/") renders the Stage 4 Starter Screen with live backend health probing.
- * 2. Public auth routes ("/login", "/register") use AuthLayout.
- * 3. Protected dashboard routes ("/dashboard", etc.) use ProtectedRoute wrapper + DashboardLayout.
- *    For Stage 4 development preview, isAuthenticated can be toggled or viewed directly.
+ * 2. Public status page ("/status/:slug") renders unauthenticated live status.
+ * 3. Public auth routes ("/login", "/register") use AuthLayout.
+ * 4. Protected dashboard routes ("/dashboard", etc.) use ProtectedRoute wrapper + DashboardLayout.
  */
 
 export const router = createBrowserRouter([
   {
     path: '/',
     element: <StarterScreen />,
+  },
+  // Public Status Page
+  {
+    path: '/status/:slug',
+    element: <PublicStatusPage />,
   },
   // Public Authentication Routes
   {

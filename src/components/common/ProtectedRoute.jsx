@@ -113,7 +113,7 @@ export const ProtectedRoute = ({
               >
                 <AlertCircle size={22} />
               </Box>
-              <Typography variant="h6" sx={{ fontWeight: 700, color: '#ffffff' }}>
+              <Typography variant="h6" sx={{ fontWeight: 700, color: 'text.primary' }}>
                 Backend Connection Unavailable
               </Typography>
             </Stack>

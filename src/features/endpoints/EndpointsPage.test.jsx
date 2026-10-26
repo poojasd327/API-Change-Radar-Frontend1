@@ -6,9 +6,11 @@ import { ThemeProvider } from '@mui/material/styles';
 import { theme } from '@/theme/theme';
 import { EndpointsPage } from './EndpointsPage';
 import * as useEndpointsModule from '@/hooks/useEndpoints';
+import * as useContractsModule from '@/hooks/useContracts';
 
-// Mock useEndpoints hook
+// Mock useEndpoints and useContracts modules
 vi.mock('@/hooks/useEndpoints');
+vi.mock('@/hooks/useContracts');
 
 const renderWithProviders = (ui) => {
   return render(
@@ -20,9 +22,39 @@ const renderWithProviders = (ui) => {
 
 describe('EndpointsPage', () => {
   const mockRefetch = vi.fn();
+  const mockMutateAsync = vi.fn();
 
   beforeEach(() => {
     vi.restoreAllMocks();
+    vi.mocked(useEndpointsModule.useCreateEndpoint).mockReturnValue({
+      mutateAsync: mockMutateAsync,
+      isPending: false,
+    });
+    vi.mocked(useContractsModule.useContracts).mockReturnValue({
+      data: { data: [] },
+      isLoading: false,
+      refetch: vi.fn(),
+    });
+    vi.mocked(useContractsModule.useCreateContract).mockReturnValue({
+      mutateAsync: vi.fn(),
+      isPending: false,
+    });
+    vi.mocked(useContractsModule.useValidateContract).mockReturnValue({
+      mutateAsync: vi.fn(),
+      isPending: false,
+    });
+    vi.mocked(useContractsModule.useInferContract).mockReturnValue({
+      mutateAsync: vi.fn(),
+      isPending: false,
+    });
+    vi.mocked(useContractsModule.useApproveContract).mockReturnValue({
+      mutateAsync: vi.fn(),
+      isPending: false,
+    });
+    vi.mocked(useContractsModule.useDeactivateContract).mockReturnValue({
+      mutateAsync: vi.fn(),
+      isPending: false,
+    });
   });
 
   it('renders loading state when fetching endpoints', () => {
@@ -210,5 +242,87 @@ describe('EndpointsPage', () => {
     const refreshBtn = screen.getByRole('button', { name: /^Refresh$/i });
     fireEvent.click(refreshBtn);
     expect(mockRefetch).toHaveBeenCalledTimes(1);
+  });
+
+  it('opens AddEndpointDialog when header Add Endpoint button is clicked', () => {
+    vi.mocked(useEndpointsModule.useEndpoints).mockReturnValue({
+      data: { data: [], pagination: { total: 0 } },
+      isLoading: false,
+      isError: false,
+      error: null,
+      refetch: mockRefetch,
+      isFetching: false,
+    });
+
+    renderWithProviders(<EndpointsPage />);
+
+    expect(screen.queryByTestId('add-endpoint-dialog')).not.toBeInTheDocument();
+    fireEvent.click(screen.getByTestId('open-add-endpoint-btn'));
+    expect(screen.getByTestId('add-endpoint-dialog')).toBeInTheDocument();
+  });
+
+  it('opens AddEndpointDialog when empty state Register First Endpoint button is clicked', () => {
+    vi.mocked(useEndpointsModule.useEndpoints).mockReturnValue({
+      data: { data: [], pagination: { total: 0 } },
+      isLoading: false,
+      isError: false,
+      error: null,
+      refetch: mockRefetch,
+      isFetching: false,
+    });
+
+    renderWithProviders(<EndpointsPage />);
+
+    expect(screen.queryByTestId('add-endpoint-dialog')).not.toBeInTheDocument();
+    fireEvent.click(screen.getByTestId('empty-add-endpoint-btn'));
+    expect(screen.getByTestId('add-endpoint-dialog')).toBeInTheDocument();
+  });
+
+  it('opens ManageContractDialog when header Contracts button is clicked', () => {
+    vi.mocked(useEndpointsModule.useEndpoints).mockReturnValue({
+      data: { data: [], pagination: { total: 0 } },
+      isLoading: false,
+      isError: false,
+      error: null,
+      refetch: mockRefetch,
+      isFetching: false,
+    });
+
+    renderWithProviders(<EndpointsPage />);
+
+    expect(screen.queryByTestId('manage-contract-dialog')).not.toBeInTheDocument();
+    fireEvent.click(screen.getByTestId('open-contracts-btn'));
+    expect(screen.getByTestId('manage-contract-dialog')).toBeInTheDocument();
+  });
+
+  it('opens ManageContractDialog when Define Contract button on an endpoint row is clicked', () => {
+    vi.mocked(useEndpointsModule.useEndpoints).mockReturnValue({
+      data: {
+        data: [
+          {
+            _id: 'ep-002',
+            name: 'Billing Invoices API',
+            url: 'https://api.example.com/v1/invoices',
+            method: 'GET',
+            intervalSeconds: 300,
+            status: 'paused',
+            hasActiveContract: false,
+            createdAt: '2025-01-10T10:00:00.000Z',
+          },
+        ],
+        pagination: { total: 1 },
+      },
+      isLoading: false,
+      isError: false,
+      error: null,
+      refetch: mockRefetch,
+      isFetching: false,
+    });
+
+    renderWithProviders(<EndpointsPage />);
+
+    expect(screen.queryByTestId('manage-contract-dialog')).not.toBeInTheDocument();
+    fireEvent.click(screen.getByTestId('define-contract-btn-ep-002'));
+    expect(screen.getByTestId('manage-contract-dialog')).toBeInTheDocument();
   });
 });

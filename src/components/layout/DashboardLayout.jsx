@@ -72,7 +72,7 @@ export const DashboardLayout = ({ onLogout: propOnLogout, userEmail: propUserEma
           display: 'flex',
           alignItems: 'center',
           gap: 1.5,
-          borderBottom: '1px solid rgba(255,255,255,0.08)',
+          borderBottom: '1px solid #e2e8f0',
         }}
       >
         <Link
@@ -88,8 +88,8 @@ export const DashboardLayout = ({ onLogout: propOnLogout, userEmail: propUserEma
             sx={{
               p: 1,
               borderRadius: 1.5,
-              bgcolor: 'rgba(59, 130, 246, 0.15)',
-              color: '#60a5fa',
+              bgcolor: 'rgba(37, 99, 235, 0.1)',
+              color: '#2563eb',
               display: 'flex',
               alignItems: 'center',
             }}
@@ -99,10 +99,10 @@ export const DashboardLayout = ({ onLogout: propOnLogout, userEmail: propUserEma
           <Box>
             <Typography
               variant="subtitle1"
-              sx={{ fontWeight: 800, color: '#ffffff', lineHeight: 1.2 }}
+              sx={{ fontWeight: 800, color: 'text.primary', lineHeight: 1.2 }}
             >
               APIChange{' '}
-              <Box component="span" sx={{ color: '#60a5fa' }}>
+              <Box component="span" sx={{ color: '#2563eb' }}>
                 Radar
               </Box>
             </Typography>
@@ -132,9 +132,9 @@ export const DashboardLayout = ({ onLogout: propOnLogout, userEmail: propUserEma
                   textDecoration: 'none',
                   borderRadius: 8,
                   padding: '8px 12px',
-                  backgroundColor: isActive ? 'rgba(59, 130, 246, 0.15)' : 'transparent',
-                  color: isActive ? '#60a5fa' : '#94a3b8',
-                  borderLeft: isActive ? '3px solid #3b82f6' : '3px solid transparent',
+                  backgroundColor: isActive ? '#eff6ff' : 'transparent',
+                  color: isActive ? '#2563eb' : '#64748b',
+                  borderLeft: isActive ? '3px solid #2563eb' : '3px solid transparent',
                   fontWeight: isActive ? 600 : 500,
                   fontSize: '0.875rem',
                   transition: 'all 0.15s ease',
@@ -157,12 +157,13 @@ export const DashboardLayout = ({ onLogout: propOnLogout, userEmail: propUserEma
       </List>
 
       {/* Individual User Account Section */}
-      <Box sx={{ p: 2, borderTop: '1px solid rgba(255,255,255,0.08)' }}>
+      <Box sx={{ p: 2, borderTop: '1px solid #e2e8f0' }}>
         <Box
           sx={{
             p: 1.5,
             borderRadius: 2,
-            bgcolor: 'rgba(255, 255, 255, 0.03)',
+            bgcolor: '#f8fafc',
+            border: '1px solid #e2e8f0',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
@@ -177,8 +178,8 @@ export const DashboardLayout = ({ onLogout: propOnLogout, userEmail: propUserEma
               sx={{
                 width: 32,
                 height: 32,
-                bgcolor: 'rgba(59, 130, 246, 0.2)',
-                color: '#60a5fa',
+                bgcolor: 'rgba(37, 99, 235, 0.1)',
+                color: '#2563eb',
               }}
             >
               <UserIcon size={16} />
@@ -190,7 +191,7 @@ export const DashboardLayout = ({ onLogout: propOnLogout, userEmail: propUserEma
                 sx={{
                   fontWeight: 600,
                   fontSize: '0.78rem',
-                  color: '#ffffff',
+                  color: 'text.primary',
                 }}
               >
                 {userEmail}
@@ -226,7 +227,7 @@ export const DashboardLayout = ({ onLogout: propOnLogout, userEmail: propUserEma
           position="fixed"
           sx={{
             bgcolor: 'background.paper',
-            borderBottom: '1px solid rgba(255,255,255,0.08)',
+            borderBottom: '1px solid #e2e8f0',
             zIndex: theme.zIndex.drawer + 1,
           }}
         >
@@ -240,8 +241,11 @@ export const DashboardLayout = ({ onLogout: propOnLogout, userEmail: propUserEma
                 textDecoration: 'none',
               }}
             >
-              <Radio size={20} color="#60a5fa" />
-              <Typography variant="subtitle1" sx={{ fontWeight: 700, color: '#ffffff' }}>
+              <Radio size={20} color="#2563eb" />
+              <Typography
+                variant="subtitle1"
+                sx={{ fontWeight: 700, color: 'text.primary' }}
+              >
                 APIChange Radar
               </Typography>
             </Link>
@@ -270,7 +274,7 @@ export const DashboardLayout = ({ onLogout: propOnLogout, userEmail: propUserEma
             '& .MuiDrawer-paper': {
               boxSizing: 'border-box',
               width: DRAWER_WIDTH,
-              borderRight: '1px solid rgba(255,255,255,0.08)',
+              borderRight: '1px solid #e2e8f0',
             },
           }}
         >
@@ -285,7 +289,7 @@ export const DashboardLayout = ({ onLogout: propOnLogout, userEmail: propUserEma
             '& .MuiDrawer-paper': {
               boxSizing: 'border-box',
               width: DRAWER_WIDTH,
-              borderRight: '1px solid rgba(255,255,255,0.08)',
+              borderRight: '1px solid #e2e8f0',
             },
           }}
           open

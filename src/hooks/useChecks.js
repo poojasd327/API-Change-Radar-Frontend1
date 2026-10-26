@@ -27,6 +27,8 @@ export function useRunMockCheck() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: CHECKS_HISTORY_QUERY_KEY });
       queryClient.invalidateQueries({ queryKey: CHECKS_LATEST_QUERY_KEY });
+      queryClient.invalidateQueries({ queryKey: ['endpoints'] });
+      queryClient.invalidateQueries({ queryKey: ['incidents'] });
     },
   });
 }

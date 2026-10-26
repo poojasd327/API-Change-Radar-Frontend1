@@ -27,8 +27,9 @@ const envSchema = z.object({
   VITE_API_AUTH_ME: endpointPath('/api/auth/me'),
   VITE_API_AUTH_LOGOUT: endpointPath('/api/auth/logout'),
 
-  // Endpoints
+  // Endpoints & Contracts
   VITE_API_ENDPOINTS: endpointPath('/api/endpoints'),
+  VITE_API_CONTRACTS: endpointPath('/api/contracts'),
 
   // Checks
   VITE_API_CHECKS_HISTORY: endpointPath('/api/checks/history'),
@@ -59,6 +60,7 @@ function validateEnv() {
     VITE_API_AUTH_ME: import.meta.env.VITE_API_AUTH_ME,
     VITE_API_AUTH_LOGOUT: import.meta.env.VITE_API_AUTH_LOGOUT,
     VITE_API_ENDPOINTS: import.meta.env.VITE_API_ENDPOINTS,
+    VITE_API_CONTRACTS: import.meta.env.VITE_API_CONTRACTS,
     VITE_API_CHECKS_HISTORY: import.meta.env.VITE_API_CHECKS_HISTORY,
     VITE_API_CHECKS_LATEST: import.meta.env.VITE_API_CHECKS_LATEST,
     VITE_API_CHECKS_MOCK_PRODUCT: import.meta.env.VITE_API_CHECKS_MOCK_PRODUCT,
@@ -99,6 +101,7 @@ Please ensure you have a .env file configured based on .env.example:
       VITE_API_AUTH_ME: '/api/auth/me',
       VITE_API_AUTH_LOGOUT: '/api/auth/logout',
       VITE_API_ENDPOINTS: '/api/endpoints',
+      VITE_API_CONTRACTS: '/api/contracts',
       VITE_API_CHECKS_HISTORY: '/api/checks/history',
       VITE_API_CHECKS_LATEST: '/api/checks/history/latest',
       VITE_API_CHECKS_MOCK_PRODUCT: '/api/checks/mock-product',
@@ -125,6 +128,7 @@ export const API_ROUTES = {
     logout: env.VITE_API_AUTH_LOGOUT,
   },
   endpoints: env.VITE_API_ENDPOINTS,
+  contracts: env.VITE_API_CONTRACTS,
   checks: {
     history: env.VITE_API_CHECKS_HISTORY,
     latest: env.VITE_API_CHECKS_LATEST,

@@ -4,3 +4,4 @@ export * from './endpoints.service';
 export * from './checks.service';
 export * from './incidents.service';
 export * from './status-page.service';
+export * from './contracts.service';

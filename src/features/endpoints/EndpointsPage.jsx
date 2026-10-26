@@ -31,40 +31,48 @@ import {
   Clock,
   ShieldCheck,
   ShieldAlert,
+  Plus,
+  Activity,
+  FileCode,
 } from 'lucide-react';
 import { env } from '@/lib/env';
 import { useEndpoints } from '@/hooks/useEndpoints';
+import { AddEndpointDialog } from './AddEndpointDialog';
+import { ManageContractDialog } from './ManageContractDialog';
 
 const METHOD_COLORS = {
   GET: {
-    bg: 'rgba(2, 132, 199, 0.15)',
-    text: '#38bdf8',
-    border: 'rgba(2, 132, 199, 0.4)',
+    bg: 'rgba(2, 132, 199, 0.08)',
+    text: '#0284c7',
+    border: 'rgba(2, 132, 199, 0.25)',
   },
   POST: {
-    bg: 'rgba(16, 185, 129, 0.15)',
-    text: '#34d399',
-    border: 'rgba(16, 185, 129, 0.4)',
+    bg: 'rgba(16, 185, 129, 0.08)',
+    text: '#059669',
+    border: 'rgba(16, 185, 129, 0.25)',
   },
   PUT: {
-    bg: 'rgba(245, 158, 11, 0.15)',
-    text: '#fbbf24',
-    border: 'rgba(245, 158, 11, 0.4)',
+    bg: 'rgba(217, 119, 6, 0.08)',
+    text: '#d97706',
+    border: 'rgba(217, 119, 6, 0.25)',
   },
   PATCH: {
-    bg: 'rgba(168, 85, 247, 0.15)',
-    text: '#c084fc',
-    border: 'rgba(168, 85, 247, 0.4)',
+    bg: 'rgba(124, 58, 237, 0.08)',
+    text: '#7c3aed',
+    border: 'rgba(124, 58, 237, 0.25)',
   },
   DELETE: {
-    bg: 'rgba(244, 63, 94, 0.15)',
-    text: '#fb7185',
-    border: 'rgba(244, 63, 94, 0.4)',
+    bg: 'rgba(225, 29, 72, 0.08)',
+    text: '#e11d48',
+    border: 'rgba(225, 29, 72, 0.25)',
   },
 };
 
 export const EndpointsPage = () => {
   const [page, setPage] = useState(1);
+  const [isAddOpen, setIsAddOpen] = useState(false);
+  const [isContractOpen, setIsContractOpen] = useState(false);
+  const [selectedEndpointForContract, setSelectedEndpointForContract] = useState(null);
   const limit = 10;
 
   const { data, isLoading, isError, error, refetch, isFetching } = useEndpoints({
@@ -113,7 +121,7 @@ export const EndpointsPage = () => {
         }}
       >
         <Box>
-          <Typography variant="h5" sx={{ fontWeight: 700, color: '#ffffff' }}>
+          <Typography variant="h5" sx={{ fontWeight: 700, color: 'text.primary' }}>
             Endpoint Management
           </Typography>
           <Typography variant="body2" sx={{ color: 'text.secondary' }}>
@@ -121,6 +129,28 @@ export const EndpointsPage = () => {
           </Typography>
         </Box>
         <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center' }}>
+          <Button
+            component={Link}
+            to="/checks"
+            variant="outlined"
+            size="small"
+            startIcon={<Activity size={16} />}
+            data-testid="endpoints-to-checks-btn"
+          >
+            Check History
+          </Button>
+          <Button
+            variant="outlined"
+            size="small"
+            startIcon={<FileCode size={16} />}
+            onClick={() => {
+              setSelectedEndpointForContract(null);
+              setIsContractOpen(true);
+            }}
+            data-testid="open-contracts-btn"
+          >
+            Contracts
+          </Button>
           <Button
             component={Link}
             to="/dashboard"
@@ -141,16 +171,34 @@ export const EndpointsPage = () => {
           >
             Refresh
           </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            size="small"
+            startIcon={<Plus size={16} />}
+            onClick={() => setIsAddOpen(true)}
+            data-testid="open-add-endpoint-btn"
+          >
+            Add Endpoint
+          </Button>
         </Stack>
       </Box>
 
       {/* Target backend route indicator */}
-      <Card variant="outlined" sx={{ bgcolor: 'rgba(15, 23, 42, 0.6)' }}>
+      <Card
+        variant="outlined"
+        sx={{
+          bgcolor: '#ffffff',
+          borderColor: '#e2e8f0',
+          boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.05)',
+          borderRadius: 2,
+        }}
+      >
         <CardHeader
           title={
             <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center' }}>
-              <Server size={20} color="#60a5fa" />
-              <Typography variant="h6" sx={{ fontWeight: 600 }}>
+              <Server size={20} color="#2563eb" />
+              <Typography variant="h6" sx={{ fontWeight: 600, color: 'text.primary' }}>
                 Monitored Endpoints
               </Typography>
             </Stack>
@@ -171,24 +219,31 @@ export const EndpointsPage = () => {
                 <Chip
                   size="small"
                   label={`Total: ${metrics.total}`}
-                  sx={{ bgcolor: 'rgba(255, 255, 255, 0.06)', fontWeight: 500 }}
+                  sx={{
+                    bgcolor: '#f1f5f9',
+                    color: 'text.secondary',
+                    border: '1px solid #e2e8f0',
+                    fontWeight: 600,
+                  }}
                 />
                 <Chip
                   size="small"
                   label={`Active: ${metrics.activeCount}`}
                   sx={{
-                    bgcolor: 'rgba(16, 185, 129, 0.1)',
-                    color: '#34d399',
-                    fontWeight: 500,
+                    bgcolor: 'rgba(16, 185, 129, 0.08)',
+                    color: '#059669',
+                    border: '1px solid rgba(16, 185, 129, 0.25)',
+                    fontWeight: 600,
                   }}
                 />
                 <Chip
                   size="small"
                   label={`Contracts: ${metrics.contractCount}`}
                   sx={{
-                    bgcolor: 'rgba(59, 130, 246, 0.1)',
-                    color: '#60a5fa',
-                    fontWeight: 500,
+                    bgcolor: 'rgba(37, 99, 235, 0.08)',
+                    color: '#2563eb',
+                    border: '1px solid rgba(37, 99, 235, 0.25)',
+                    fontWeight: 600,
                   }}
                 />
               </Stack>
@@ -292,7 +347,7 @@ export const EndpointsPage = () => {
               >
                 <ServerOff size={28} color="#60a5fa" />
               </Box>
-              <Typography variant="h6" sx={{ fontWeight: 600, color: '#ffffff' }}>
+              <Typography variant="h6" sx={{ fontWeight: 600, color: 'text.primary' }}>
                 No Monitored Endpoints Found
               </Typography>
               <Typography
@@ -305,11 +360,25 @@ export const EndpointsPage = () => {
               </Typography>
               <Typography
                 variant="caption"
-                sx={{ color: 'text.secondary', fontFamily: 'monospace' }}
+                sx={{
+                  color: 'text.secondary',
+                  fontFamily: 'monospace',
+                  display: 'block',
+                  mb: 2,
+                }}
               >
                 Verified backend response: 0 records returned from GET{' '}
                 {env.VITE_API_ENDPOINTS}
               </Typography>
+              <Button
+                variant="contained"
+                color="primary"
+                startIcon={<Plus size={16} />}
+                onClick={() => setIsAddOpen(true)}
+                data-testid="empty-add-endpoint-btn"
+              >
+                Register First Endpoint
+              </Button>
             </Box>
           )}
 
@@ -323,26 +392,24 @@ export const EndpointsPage = () => {
                 <Table aria-label="monitored endpoints table">
                   <TableHead>
                     <TableRow
-                      sx={{ '& th': { borderColor: 'rgba(255, 255, 255, 0.08)' } }}
+                      sx={{
+                        bgcolor: '#f8fafc',
+                        '& th': {
+                          borderColor: '#e2e8f0',
+                          color: '#475569',
+                          fontWeight: 600,
+                          fontSize: '0.75rem',
+                          textTransform: 'uppercase',
+                          letterSpacing: '0.05em',
+                        },
+                      }}
                     >
-                      <TableCell sx={{ color: 'text.secondary', fontWeight: 600 }}>
-                        Endpoint
-                      </TableCell>
-                      <TableCell sx={{ color: 'text.secondary', fontWeight: 600 }}>
-                        Method
-                      </TableCell>
-                      <TableCell sx={{ color: 'text.secondary', fontWeight: 600 }}>
-                        Status
-                      </TableCell>
-                      <TableCell sx={{ color: 'text.secondary', fontWeight: 600 }}>
-                        Contract
-                      </TableCell>
-                      <TableCell sx={{ color: 'text.secondary', fontWeight: 600 }}>
-                        Latest Check
-                      </TableCell>
-                      <TableCell sx={{ color: 'text.secondary', fontWeight: 600 }}>
-                        Registered
-                      </TableCell>
+                      <TableCell>Endpoint</TableCell>
+                      <TableCell>Method</TableCell>
+                      <TableCell>Status</TableCell>
+                      <TableCell>Contract</TableCell>
+                      <TableCell>Latest Check</TableCell>
+                      <TableCell>Registered</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -355,15 +422,15 @@ export const EndpointsPage = () => {
                           data-testid={`endpoint-row-${ep._id}`}
                           sx={{
                             '&:last-child td, &:last-child th': { border: 0 },
-                            '& td': { borderColor: 'rgba(255, 255, 255, 0.06)' },
-                            '&:hover': { bgcolor: 'rgba(255, 255, 255, 0.02)' },
+                            '& td': { borderColor: '#f1f5f9' },
+                            '&:hover': { bgcolor: '#f8fafc' },
                           }}
                         >
                           {/* Name and URL */}
                           <TableCell component="th" scope="row">
                             <Typography
                               variant="body2"
-                              sx={{ fontWeight: 600, color: '#ffffff' }}
+                              sx={{ fontWeight: 600, color: 'text.primary' }}
                             >
                               {ep.name}
                             </Typography>
@@ -406,11 +473,11 @@ export const EndpointsPage = () => {
                             {ep.isActive ? (
                               <Chip
                                 size="small"
-                                icon={<CheckCircle2 size={12} color="#10b981" />}
+                                icon={<CheckCircle2 size={12} color="#059669" />}
                                 label="Active"
                                 sx={{
-                                  bgcolor: 'rgba(16, 185, 129, 0.1)',
-                                  color: '#34d399',
+                                  bgcolor: 'rgba(16, 185, 129, 0.08)',
+                                  color: '#059669',
                                   border: '1px solid rgba(16, 185, 129, 0.25)',
                                   fontWeight: 500,
                                 }}
@@ -418,12 +485,12 @@ export const EndpointsPage = () => {
                             ) : (
                               <Chip
                                 size="small"
-                                icon={<Clock size={12} color="#94a3b8" />}
+                                icon={<Clock size={12} color="#64748b" />}
                                 label="Paused"
                                 sx={{
-                                  bgcolor: 'rgba(148, 163, 184, 0.1)',
-                                  color: '#94a3b8',
-                                  border: '1px solid rgba(148, 163, 184, 0.2)',
+                                  bgcolor: '#f1f5f9',
+                                  color: '#64748b',
+                                  border: '1px solid #e2e8f0',
                                   fontWeight: 500,
                                 }}
                               />
@@ -432,33 +499,81 @@ export const EndpointsPage = () => {
 
                           {/* Contract Readiness */}
                           <TableCell>
-                            {ep.hasActiveContract ? (
-                              <Chip
-                                size="small"
-                                icon={<ShieldCheck size={12} color="#10b981" />}
-                                label="Approved"
-                                sx={{
-                                  bgcolor: 'rgba(16, 185, 129, 0.1)',
-                                  color: '#34d399',
-                                  border: '1px solid rgba(16, 185, 129, 0.25)',
-                                  fontWeight: 500,
-                                }}
-                              />
-                            ) : (
-                              <Tooltip title="An approved contract is required for automated contract drift checks">
-                                <Chip
-                                  size="small"
-                                  icon={<ShieldAlert size={12} color="#f59e0b" />}
-                                  label="Pending"
-                                  sx={{
-                                    bgcolor: 'rgba(245, 158, 11, 0.1)',
-                                    color: '#fbbf24',
-                                    border: '1px solid rgba(245, 158, 11, 0.25)',
-                                    fontWeight: 500,
-                                  }}
-                                />
-                              </Tooltip>
-                            )}
+                            <Stack spacing={0.8} sx={{ alignItems: 'flex-start' }}>
+                              {ep.hasActiveContract ? (
+                                <Stack
+                                  direction="row"
+                                  spacing={1}
+                                  sx={{ alignItems: 'center' }}
+                                >
+                                  <Chip
+                                    size="small"
+                                    icon={<ShieldCheck size={12} color="#059669" />}
+                                    label="Approved"
+                                    sx={{
+                                      bgcolor: 'rgba(16, 185, 129, 0.08)',
+                                      color: '#059669',
+                                      border: '1px solid rgba(16, 185, 129, 0.25)',
+                                      fontWeight: 500,
+                                    }}
+                                  />
+                                  <Button
+                                    size="small"
+                                    variant="text"
+                                    onClick={() => {
+                                      setSelectedEndpointForContract(ep);
+                                      setIsContractOpen(true);
+                                    }}
+                                    sx={{
+                                      fontSize: '0.72rem',
+                                      p: 0,
+                                      minWidth: 'auto',
+                                      textTransform: 'none',
+                                      color: '#2563eb',
+                                      fontWeight: 600,
+                                      '&:hover': { color: '#1d4ed8' },
+                                    }}
+                                    data-testid={`manage-contract-btn-${ep._id}`}
+                                  >
+                                    Manage
+                                  </Button>
+                                </Stack>
+                              ) : (
+                                <Stack spacing={0.6} sx={{ alignItems: 'flex-start' }}>
+                                  <Tooltip title="An approved contract is required for automated contract drift checks">
+                                    <Chip
+                                      size="small"
+                                      icon={<ShieldAlert size={12} color="#d97706" />}
+                                      label="Pending"
+                                      sx={{
+                                        bgcolor: 'rgba(245, 158, 11, 0.08)',
+                                        color: '#d97706',
+                                        border: '1px solid rgba(245, 158, 11, 0.25)',
+                                        fontWeight: 500,
+                                      }}
+                                    />
+                                  </Tooltip>
+                                  <Button
+                                    size="small"
+                                    variant="outlined"
+                                    color="warning"
+                                    onClick={() => {
+                                      setSelectedEndpointForContract(ep);
+                                      setIsContractOpen(true);
+                                    }}
+                                    sx={{
+                                      fontSize: '0.7rem',
+                                      py: 0.2,
+                                      px: 0.8,
+                                      textTransform: 'none',
+                                    }}
+                                    data-testid={`define-contract-btn-${ep._id}`}
+                                  >
+                                    Define Contract
+                                  </Button>
+                                </Stack>
+                              )}
+                            </Stack>
                           </TableCell>
 
                           {/* Latest Check Summary */}
@@ -470,27 +585,39 @@ export const EndpointsPage = () => {
                                   spacing={1}
                                   sx={{ alignItems: 'center' }}
                                 >
-                                  {ep.latestCheck.status === 'pass' ? (
+                                  {['healthy', 'pass'].includes(ep.latestCheck.status) ? (
                                     <Chip
                                       size="small"
-                                      icon={<CheckCircle2 size={10} color="#10b981" />}
-                                      label="Pass"
+                                      icon={<CheckCircle2 size={10} color="#059669" />}
+                                      label={
+                                        ep.latestCheck.status === 'pass'
+                                          ? 'Pass'
+                                          : 'Healthy'
+                                      }
                                       sx={{
-                                        bgcolor: 'rgba(16, 185, 129, 0.12)',
-                                        color: '#34d399',
+                                        bgcolor: 'rgba(16, 185, 129, 0.08)',
+                                        color: '#059669',
+                                        border: '1px solid rgba(16, 185, 129, 0.25)',
                                         fontSize: '0.7rem',
+                                        fontWeight: 600,
                                         height: 20,
                                       }}
                                     />
                                   ) : (
                                     <Chip
                                       size="small"
-                                      icon={<XCircle size={10} color="#f43f5e" />}
-                                      label={ep.latestCheck.status || 'Fail'}
+                                      icon={<XCircle size={10} color="#dc2626" />}
+                                      label={
+                                        ep.latestCheck.status === 'failed'
+                                          ? 'Failed'
+                                          : ep.latestCheck.status || 'Fail'
+                                      }
                                       sx={{
-                                        bgcolor: 'rgba(244, 63, 94, 0.12)',
-                                        color: '#fb7185',
+                                        bgcolor: 'rgba(239, 68, 68, 0.08)',
+                                        color: '#dc2626',
+                                        border: '1px solid rgba(239, 68, 68, 0.25)',
                                         fontSize: '0.7rem',
+                                        fontWeight: 600,
                                         height: 20,
                                       }}
                                     />
@@ -511,7 +638,11 @@ export const EndpointsPage = () => {
                                 {ep.latestCheck.failureType && (
                                   <Typography
                                     variant="caption"
-                                    sx={{ color: '#fb7185', fontSize: '0.7rem' }}
+                                    sx={{
+                                      color: '#dc2626',
+                                      fontSize: '0.7rem',
+                                      fontWeight: 500,
+                                    }}
                                   >
                                     {ep.latestCheck.failureType}
                                   </Typography>
@@ -562,6 +693,18 @@ export const EndpointsPage = () => {
           )}
         </CardContent>
       </Card>
+
+      {/* Add Endpoint Dialog Modal */}
+      <AddEndpointDialog open={isAddOpen} onClose={() => setIsAddOpen(false)} />
+
+      {/* Contract Management Dialog Modal */}
+      <ManageContractDialog
+        open={isContractOpen}
+        onClose={() => setIsContractOpen(false)}
+        endpoint={selectedEndpointForContract}
+        endpoints={endpoints}
+        onSuccess={() => refetch()}
+      />
     </Stack>
   );
 };

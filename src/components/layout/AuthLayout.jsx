@@ -79,9 +79,9 @@ export const AuthLayout = () => {
             >
               <Radio size={22} className="animate-pulse" />
             </Box>
-            <Typography variant="h5" sx={{ fontWeight: 800, color: '#ffffff' }}>
+            <Typography variant="h5" sx={{ fontWeight: 800, color: 'text.primary' }}>
               APIChange{' '}
-              <Box component="span" sx={{ color: '#60a5fa' }}>
+              <Box component="span" sx={{ color: '#2563eb' }}>
                 Radar
               </Box>
             </Typography>
@@ -103,9 +103,10 @@ export const AuthLayout = () => {
           sx={{
             p: { xs: 3, sm: 4 },
             borderRadius: 3,
-            backgroundColor: 'rgba(15, 23, 42, 0.75)',
-            backdropFilter: 'blur(16px)',
-            border: '1px solid rgba(255, 255, 255, 0.08)',
+            backgroundColor: '#ffffff',
+            border: '1px solid #e2e8f0',
+            boxShadow:
+              '0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05)',
           }}
         >
           <Outlet />
